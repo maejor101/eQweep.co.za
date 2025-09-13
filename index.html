@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eQweep POS Solutions</title>
+  <link rel="icon" href="assets/logo.png">
+  <style>
+    :root {
+      --accent: #2563eb;
+      --accent-light: #e0e7ff;
+      --accent-dark: #1e40af;
+      --bg-gradient: linear-gradient(135deg, #e0e7ff 0%, #fff 50%, #bae6fd 100%);
+      --card-radius: 1.25rem;
+      --shadow: 0 4px 24px rgba(37,99,235,0.08);
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: var(--bg-gradient);
+      color: #1e293b;
+      min-height: 100vh;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid #e5e7eb;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    }
+    .navbar-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .navbar-logo img {
+      border-radius: 0.5rem;
+  width: 94px;
+  height: 76px;
+      object-fit: contain;
+      aspect-ratio: 1.3 / 1;
+      transform: scaleX(1.15);
+    }
+    .navbar-title {
+      font-weight: 800;
+      font-size: 2rem;
+      color: var(--accent);
+      letter-spacing: -1px;
+    }
+    .navbar-links {
+      display: flex;
+      gap: 2.5rem;
+      font-weight: 500;
+      color: #334155;
+      transition: max-height 0.3s, opacity 0.3s;
+    }
+    .navbar-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+      margin-left: auto;
+    }
+    .navbar-toggle .bar {
+      display: block;
+      width: 24px;
+      height: 3px;
+      margin: 4px 0;
+      background: #334155;
+      border-radius: 2px;
+      transition: background 0.2s;
+    }
+    .navbar-links a {
+      text-decoration: none;
+      color: inherit;
+      transition: color 0.2s;
+    }
+    .navbar-links a:hover {
+      color: var(--accent);
+    }
+    .hero {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5rem 2rem 3rem 2rem;
+      background: linear-gradient(90deg, #e0e7ff 0%, #fff 60%, #bae6fd 100%);
+      border-radius: 0 0 2rem 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: -3rem;
+    }
+    .hero-content {
+      flex: 1 1 320px;
+      max-width: 600px;
+    }
+    .hero-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: var(--accent-dark);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    .hero-desc {
+      font-size: 1.25rem;
+      color: #334155;
+      margin-bottom: 2rem;
+      max-width: 480px;
+    }
+    .hero-actions {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .hero-actions a {
+      display: inline-block;
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      text-decoration: none;
+      box-shadow: var(--shadow);
+      transition: background 0.2s, color 0.2s;
+    }
+    .hero-actions .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+    .hero-actions .primary:hover {
+      background: var(--accent-dark);
+    }
+    .hero-actions .secondary {
+      border: 2px solid var(--accent);
+      color: var(--accent);
+      background: #fff;
+    }
+    .hero-actions .secondary:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+    .hero-img {
+      flex: 1 1 320px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hero-img img {
+      width: 420px;
+      max-width: 100%;
+      border-radius: 2rem;
+      box-shadow: 0 8px 32px rgba(37,99,235,0.10);
+      border: 2px solid #e0e7ff;
+    }
+    .features {
+      background: #fff;
+      border-radius: 2rem;
+      box-shadow: var(--shadow);
+      margin: 0 auto;
+      margin-top: -2.5rem;
+      margin-bottom: 3rem;
+      max-width: 1200px;
+      padding: 3rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    .feature-card {
+      background: var(--accent-light);
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 1px solid #e0e7ff;
+      transition: box-shadow 0.2s;
+    }
+    .feature-card:hover {
+      box-shadow: 0 8px 32px rgba(37,99,235,0.15);
+    }
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .feature-title {
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .feature-desc {
+      color: #334155;
+      font-size: 1rem;
+    }
+    .section {
+      background: linear-gradient(90deg, #e0e7ff 0%, #fff 60%, #bae6fd 100%);
+      border-radius: 2rem;
+      box-shadow: var(--shadow);
+      margin: 0 auto 3rem auto;
+      max-width: 1200px;
+      padding: 3rem 2rem;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent-dark);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .solution-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    .solution-card {
+      background: #fff;
+      border-radius: var(--card-radius);
+      box-shadow: var(--shadow);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      border: 1px solid #e0e7ff;
+    }
+    .solution-card img {
+      width: 60%;
+      height: 60%;
+      max-width: 240px;
+      max-height: 60%;
+      aspect-ratio: 4/3;
+      object-fit: contain;
+      border-radius: 1rem;
+      margin-bottom: 1rem;
+      border: 1px solid #e0e7ff;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .solution-headline {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+    .solution-features {
+      color: #334155;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      text-align: left;
+      list-style: none;
+      padding-left: 0;
+    }
+    .solution-cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1.5rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    .solution-cta:hover {
+      background: var(--accent-dark);
+    }
+    .hardware-section {
+      background: #fff;
+      border-radius: 2rem;
+      box-shadow: var(--shadow);
+      margin: 0 auto 3rem auto;
+      max-width: 1200px;
+      padding: 3rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .hardware-list, .hardware-benefits {
+      color: #334155;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      list-style: none;
+      padding-left: 0;
+    }
+    .hardware-cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1.5rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    .hardware-cta:hover {
+      background: var(--accent-dark);
+    }
+    .hardware-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .hardware-img img {
+      width: 220px;
+      max-width: 100%;
+      border-radius: 1.5rem;
+      box-shadow: 0 8px 32px rgba(37,99,235,0.10);
+      border: 2px solid #e0e7ff;
+    }
+    .support-section {
+      background: linear-gradient(90deg, #e0e7ff 0%, #fff 60%, #bae6fd 100%);
+      border-radius: 2rem;
+      box-shadow: var(--shadow);
+      margin: 0 auto 3rem auto;
+      max-width: 1200px;
+      padding: 3rem 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .support-list {
+      color: #334155;
+      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
+      list-style: none;
+      padding-left: 0;
+    }
+    .support-cta {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      padding: 0.5rem 1.5rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      margin-top: 0.5rem;
+      transition: background 0.2s;
+    }
+    .support-cta:hover {
+      background: var(--accent-dark);
+    }
+    .contact-section {
+      background: #fff;
+      border-radius: 2rem;
+      box-shadow: var(--shadow);
+      margin: 0 auto 3rem auto;
+      max-width: 700px;
+      padding: 3rem 2rem;
+    }
+    .contact-title {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent-dark);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .contact-form {
+      display: grid;
+      gap: 1.5rem;
+      background: var(--accent-light);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid #e0e7ff;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      border: 1px solid #a5b4fc;
+      padding: 1rem;
+      border-radius: 1rem;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px #2563eb33;
+    }
+    .contact-form button {
+      background: var(--accent);
+      color: #fff;
+      padding: 1rem;
+      border-radius: 1rem;
+      font-weight: 600;
+      font-size: 1.1rem;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .contact-form button:hover {
+      background: var(--accent-dark);
+    }
+    .contact-info {
+      margin-top: 2rem;
+      text-align: center;
+      color: #334155;
+      font-size: 1.1rem;
+    }
+    .contact-info a {
+      color: var(--accent);
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 0.5rem;
+    }
+    .footer {
+      width: 100%;
+      padding: 2rem;
+      background: var(--accent-dark);
+      color: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      border-radius: 2rem 2rem 0 0;
+      margin-top: 3rem;
+      font-size: 1.1rem;
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover {
+      color: #bae6fd;
+    }
+    @media (max-width: 900px) {
+      .features, .solution-cards, .hardware-section, .support-section {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        flex-direction: column;
+        padding: 2rem 1rem 1.5rem 1rem;
+      }
+      .hero-img img {
+        width: 100%;
+        max-width: 260px;
+      }
+      .navbar-toggle {
+        display: flex;
+      }
+      .navbar-links {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        font-size: 1rem;
+        margin-top: 0.5rem;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        width: 100%;
+        background: rgba(255,255,255,0.97);
+        box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        border-radius: 0.5rem;
+        position: absolute;
+        left: 0;
+        top: 100%;
+        z-index: 20;
+        transition: max-height 0.3s, opacity 0.3s;
+      }
+      .navbar-links.open {
+        max-height: 400px;
+        opacity: 1;
+        padding: 1rem 2rem;
+      }
+    }
+    @media (max-width: 600px) {
+      .navbar, .hero, .features, .section, .hardware-section, .support-section, .contact-section, .footer {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+      }
+      .features, .section, .hardware-section, .support-section, .contact-section {
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+      .hero-title {
+        font-size: 1.3rem;
+      }
+      .section-title, .contact-title {
+        font-size: 1rem;
+      }
+      .navbar-links {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: flex-start;
+        font-size: 0.95rem;
+        margin-top: 0.5rem;
+      }
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+      .navbar-logo img {
+        width: 36px;
+        height: 28px;
+      }
+      .footer {
+        flex-direction: column;
+        gap: 1rem;
+        font-size: 0.95rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="navbar-logo">
+      <img src="assets/logo.png" alt="eQweep Logo">
+    </div>
+    <button class="navbar-toggle" aria-label="Toggle menu" onclick="document.querySelector('.navbar-links').classList.toggle('open')">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <div class="navbar-links">
+      <a href="#solutions">Solutions</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#support">Support</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">Modern POS Solutions for Ambitious Businesses</h1>
+      <p class="hero-desc">Refurbished hardware, industry-specific software, and expert support. Everything you need to run your business efficiently and affordably.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="primary">Get Started Free</a>
+        <a href="#contact" class="secondary">Book a Demo</a>
+      </div>
+    </div>
+    <div class="hero-img">
+  <img src="assets/laptop pos.png" alt="POS System">
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="feature-card">
+      <div class="feature-icon">💸</div>
+      <div class="feature-title">Save Big</div>
+      <div class="feature-desc">Refurbished hardware at up to 60% less than new, with no compromise on reliability.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🧑‍💻</div>
+      <div class="feature-title">Industry Software</div>
+      <div class="feature-desc">POS software tailored for retail, laundromat, restaurant, and dry cleaning.</div>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon">🛠️</div>
+      <div class="feature-title">Expert Support</div>
+      <div class="feature-desc">Installation, training, and ongoing support from real specialists.</div>
+    </div>
+  </section>
+
+  <section class="section" id="solutions">
+    <div class="section-title">Industry Solutions</div>
+    <div class="solution-cards">
+      <div class="solution-card">
+  <img src="assets/desktop based pos.avif" alt="Retail POS">
+        <div class="solution-headline">Retail POS</div>
+        <ul class="solution-features">
+          <li>Inventory Control</li>
+          <li>Barcode Scanning</li>
+          <li>Sales Reports</li>
+          <li>Staff Management</li>
+        </ul>
+        <a href="#contact" class="solution-cta">Retail Demo</a>
+      </div>
+      <div class="solution-card">
+  <img src="assets/touch pos system.jpg" alt="Laundromat & Dry Cleaning">
+        <div class="solution-headline">Laundromat & Dry Cleaning</div>
+        <ul class="solution-features">
+          <li>Ticketing System</li>
+          <li>Order Tracking</li>
+          <li>Customer Notifications</li>
+          <li>Multiple Payment Options</li>
+        </ul>
+        <a href="#contact" class="solution-cta">Laundromat Demo</a>
+      </div>
+      <div class="solution-card">
+  <img src="assets/tablet-pos-system.png" alt="Restaurant POS">
+        <div class="solution-headline">Restaurant POS</div>
+        <ul class="solution-features">
+          <li>Tableside Orders</li>
+          <li>Kitchen Display/Printing</li>
+          <li>Split Billing</li>
+          <li>Sales & Stock Reports</li>
+        </ul>
+        <a href="#contact" class="solution-cta">Restaurant Demo</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="hardware-section" id="hardware">
+    <div>
+      <ul class="hardware-list">
+        <li>POS Terminals</li>
+        <li>Receipt Printers</li>
+        <li>Barcode Scanners</li>
+        <li>Cash Drawers</li>
+      </ul>
+      <ul class="hardware-benefits">
+        <li>Up to 60% savings vs new hardware</li>
+        <li>Environmentally friendly (reduce e-waste)</li>
+        <li>Same reliable performance</li>
+      </ul>
+      <a href="#contact" class="hardware-cta">Request a Hardware Quote</a>
+    </div>
+    <div class="hardware-img">
+  <img src="assets/laptop pos.png" alt="POS Hardware">
+    </div>
+  </section>
+
+  <section class="support-section" id="support">
+    <ul class="support-list">
+      <li>Installation & setup</li>
+      <li>Training (remote/on-site)</li>
+      <li>Ongoing support (basic, standard, premium)</li>
+      <li>WhatsApp & ticket-based help</li>
+    </ul>
+    <div>
+      <a href="#contact" class="support-cta">Contact Support</a>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <div class="contact-title">Contact Us</div>
+    <form class="contact-form">
+      <input type="text" placeholder="Name" required>
+      <input type="email" placeholder="Email" required>
+      <input type="tel" placeholder="Phone">
+      <input type="text" placeholder="Business Type">
+      <textarea placeholder="Message" required></textarea>
+      <button type="submit">Send Message</button>
+    </form>
+    <div class="contact-info">
+  <div>WhatsApp:<a href="https://wa.me/27714187476">+27 71 418 7476</a></div>
+  <div>Email:<a href="mailto:info@eqweep.co.za">info@eqweep.co.za</a></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-links">
+      <a href="#solutions">Solutions</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#support">Support</a>
+    </div>
+    <div>
+      © 2025 eQweep (Pty) Ltd
+    </div>
+  </footer>
+</body>
+</html>
